@@ -1,7 +1,7 @@
 # To use this Dockerfile, you have to set `output: 'standalone'` in your next.config.mjs file.
 # From https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
 
-FROM node:22.17.0-alpine AS base
+FROM node:24.11.0-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -29,6 +29,10 @@ COPY . .
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
+
+# Payload CMS often requires environment variables during build time
+# If your build depends on them, you might need to provide them here or skip certain checks
+ENV NEXT_PRIVATE_STANDALONE_BUILD=1
 
 RUN \
   if [ -f yarn.lock ]; then yarn run build; \
